@@ -1,5 +1,3 @@
-function run() {
-  document.body.innerHTML = "Hello world";
-}
+import { run } from "./run";
 
 run();

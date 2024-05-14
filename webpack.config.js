@@ -10,8 +10,20 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/, // Регулярное выражение для обработки файлов с расширением .css
-        use: ["style-loader", "css-loader"], // Загрузчики, используемые для обработки CSS-файлов
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg|ico)$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "./",
+            },
+          },
+        ],
       },
     ],
   },

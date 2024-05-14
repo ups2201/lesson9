@@ -1,3 +1,1 @@
-import { run } from "./run";
-
-run();
+import "./styles.css";

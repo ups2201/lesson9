@@ -7,8 +7,21 @@ module.exports = {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/, // Регулярное выражение для обработки файлов с расширением .css
+        use: ["style-loader", "css-loader"], // Загрузчики, используемые для обработки CSS-файлов
+      },
+    ],
+  },
   devServer: {
     static: "./dist",
   },
-  plugins: [new HtmlWebpackPlugin()],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+  ],
+  mode: "development",
 };

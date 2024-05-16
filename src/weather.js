@@ -1,5 +1,3 @@
-// import "./styles.css";
-
 (async function () {
   // Получаем указатели на нужные элементы
   const button = document.querySelector("button");
@@ -7,29 +5,61 @@
   const inputCity = document.querySelector("input");
   const historyBlock = document.querySelector("#history");
 
-  function showWeather(el, weatherInfo) {
-    el.innerHTML = `
-        <img src="http://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@2x.png">
-        <div>${weatherInfo.name}</div>
-        <div>${weatherInfo.main.temp}</div>
-    `;
+  //Загружаем данные по текущему местоположению
+  document.addEventListener("DOMContentLoaded", showDefaultCityData);
 
-    console.log(weatherInfo.coord.lon);
-    console.log(weatherInfo.coord.lat);
-    const weatherCityImage = document.querySelector("#weatherCityImage");
-    weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${weatherInfo.coord.lon},${weatherInfo.coord.lat}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
+  //Отображение данных по введённому городу
+  button.addEventListener("click", showNewCityData);
+
+  /**
+   * Функция для отображения информции о погоде в текущем местоположении
+   */
+  function showDefaultCityData() {
+    if (!navigator.geolocation) {
+      console.log("Ваш браузер не дружит с геолокацией...");
+    } else {
+      navigator.geolocation.getCurrentPosition(success, error);
+    }
+
+    // Если всё хорошо, собираем ссылку
+    async function success(position) {
+      const { longitude, latitude } = position.coords;
+      const weatherInfo = await getWeatherByCoords(latitude, longitude);
+
+      showWeather(weatherInfoBlock, weatherInfo);
+    }
+
+    // Если всё плохо, просто напишем об этом
+    function error() {
+      console.log("Не получается определить вашу геолокацию :(");
+    }
   }
 
   /**
-   * Функция должна делать запрос на
+   * Отображение информции о погоде в городе
+   *
+   * @param weatherInfoBlock элемент информации о погоде
+   * @param weatherDataJson json с данными о погоде
+   */
+  function showWeather(weatherInfoBlock, weatherDataJson) {
+    weatherInfoBlock.innerHTML = `
+        <img src="http://openweathermap.org/img/wn/${weatherDataJson.weather[0].icon}@2x.png">
+        <div>${weatherDataJson.name}</div>
+        <div>${weatherDataJson.main.temp}</div>
+    `;
+    const weatherCityImage = document.querySelector("#weatherCityImage");
+    weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${weatherDataJson.coord.lon},${weatherDataJson.coord.lat}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
+  }
+
+  /**
+   * Функция возвращает (Promise) данные с информацией о погоде
+   *
    * https://api.openweathermap.org/data/2.5/weather?units=metric&q={{CITY_NAME}}&appid={{APP_ID}}
-   * где
-   *  {{CITY_NAME}} должен быть заменен на имя города
-   *  {{APP_ID}} должен быть заменен на ключ приложения
+   *  {{CITY_NAME}} имя города
+   *  {{APP_ID}} на ключ приложения
    * Запрос возвращает данные в формате JSON
    *
-   * функция должна возвращать (Promise) данные с информацией о погоде
-   * @param {string} cityName
+   * @param {string} cityName имя города
    */
   async function getWeatherByCityName(cityName) {
     try {
@@ -42,6 +72,17 @@
     }
   }
 
+  /**
+   * Функция возвращает (Promise) данные с информацией о погоде
+   *
+   * https://api.openweathermap.org/data/2.5/weather?units=metric&q={{CITY_NAME}}&appid={{APP_ID}}
+   *  {{CITY_NAME}} имя города
+   *  {{APP_ID}} на ключ приложения
+   * Запрос возвращает данные в формате JSON
+   *
+   * @param {number} lat координата
+   * @param {number} long координата
+   */
   async function getWeatherByCoords(lat, long) {
     try {
       const response = await fetch(
@@ -53,39 +94,13 @@
     }
   }
 
-  function showDefaultCityData() {
-    if (!navigator.geolocation) {
-      console.log("Ваш браузер не дружит с геолокацией...");
-    } else {
-      navigator.geolocation.getCurrentPosition(success, error);
-    }
-
-    // Если всё хорошо, собираем ссылку
-    function success(position) {
-      const { longitude, latitude } = position.coords;
-      showDefaultWeather(latitude, longitude);
-    }
-
-    // Если всё плохо, просто напишем об этом
-    function error() {
-      console.log("Не получается определить вашу геолокацию :(");
-    }
-  }
-
-  async function showDefaultWeather(latitude, longitude) {
-    const weatherInfo = await getWeatherByCoords(latitude, longitude);
-    weatherInfoBlock.innerHTML = `
-        <img src="http://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@2x.png">
-        <div>${weatherInfo.name}</div>
-        <div>${weatherInfo.main.temp}</div>
-    `;
-    const weatherCityImage = document.querySelector("#weatherCityImage");
-    weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${longitude},${latitude}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
-  }
-
-  document.addEventListener("DOMContentLoaded", showDefaultCityData);
-
-  async function addCity(ev, cityName) {
+  /**
+   * Функция для отображение информации о погоде в введеном городе
+   *
+   * @param ev
+   * @param {string} cityName имя города
+   */
+  async function showNewCityData(ev, cityName) {
     // чтобы не перезагружать страницу
     ev.preventDefault();
 
@@ -97,22 +112,16 @@
 
     const weather = await getWeatherByCityName(cityName);
     showWeather(weatherInfoBlock, weather);
-    addCityInHistory(historyBlock, cityName);
+    addCityInHistoryBlock(historyBlock, cityName);
   }
 
-  button.addEventListener("click", async (ev) => {
-    // чтобы не перезагружать страницу
-    ev.preventDefault();
-
-    const cityName = inputCity.value;
-    inputCity.value = "";
-
-    const weather = await getWeatherByCityName(cityName);
-    showWeather(weatherInfoBlock, weather);
-    addCityInHistory(historyBlock, cityName);
-  });
-
-  function addCityInHistory(historyBlock, cityName) {
+  /**
+   * Функция для добавления информации в историю
+   *
+   * @param historyBlock элемент для отображения истории
+   * @param {string} cityName имя горожа
+   */
+  function addCityInHistoryBlock(historyBlock, cityName) {
     const paragraph = document.createElement("p");
     paragraph.innerText = cityName;
     paragraph.className = "font-custom";

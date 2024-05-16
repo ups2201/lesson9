@@ -45,7 +45,7 @@
   async function getWeatherByCoords(lat, long) {
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=7881bfb7be02c74633e5fdee4ff41329`,
+        `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${long}&appid=7881bfb7be02c74633e5fdee4ff41329`,
       );
       return response.json();
     } catch {
@@ -53,43 +53,37 @@
     }
   }
 
-  async function test() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      let lat = position.coords.latitude;
-      let long = position.coords.longitude;
+  function showDefaultCityData() {
+    if (!navigator.geolocation) {
+      console.log("Ваш браузер не дружит с геолокацией...");
+    } else {
+      navigator.geolocation.getCurrentPosition(success, error);
+    }
 
-      const weatherCityImage = document.querySelector("#weatherCityImage");
-      weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${long},${lat}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
+    // Если всё хорошо, собираем ссылку
+    function success(position) {
+      const { longitude, latitude } = position.coords;
+      showDefaultWeather(latitude, longitude);
+    }
 
-      const weatherInfo = getWeatherByCoords(lat, long);
-      console.log(weatherInfo);
-      weatherInfoBlock.innerHTML = `
-
-        <div>${weatherInfo.name}</div>
-
-    `;
-    });
+    // Если всё плохо, просто напишем об этом
+    function error() {
+      console.log("Не получается определить вашу геолокацию :(");
+    }
   }
 
-  document.addEventListener("DOMContentLoaded", async (ev) => {
-    // await navigator.geolocation.getCurrentPosition((position) => {
-    //   let lat = position.coords.latitude;
-    //   let long = position.coords.longitude;
-    //
-    //   const weatherCityImage = document.querySelector("#weatherCityImage")
-    //   weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${long},${lat}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`
-    //
-    //   const weatherInfo = getWeatherByCoords(lat, long);
-    //   console.log(weatherInfo)
-    //   weatherInfoBlock.innerHTML = `
-    //
-    //     <div>${weatherInfo.name}</div>
-    //
-    // `
-    // });
-    const data = await test().json();
-    console.log(data);
-  });
+  async function showDefaultWeather(latitude, longitude) {
+    const weatherInfo = await getWeatherByCoords(latitude, longitude);
+    weatherInfoBlock.innerHTML = `
+        <img src="http://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@2x.png">
+        <div>${weatherInfo.name}</div>
+        <div>${weatherInfo.main.temp}</div>
+    `;
+    const weatherCityImage = document.querySelector("#weatherCityImage");
+    weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${longitude},${latitude}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
+  }
+
+  document.addEventListener("DOMContentLoaded", showDefaultCityData);
 
   async function addCity(ev, cityName) {
     // чтобы не перезагружать страницу

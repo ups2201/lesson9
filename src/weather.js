@@ -119,6 +119,21 @@
   }
 
   /**
+   * Отображение погоды в городе из истории (из localStorage)
+   *
+   * @param ev
+   */
+  async function showCityDataFromHistory(ev) {
+    // чтобы не перезагружать страницу
+    ev.preventDefault();
+
+    const weather = await getWeatherByCityName(this.innerText);
+    if (weather.cod === 200) {
+      showWeather(weatherInfoBlock, weather);
+    }
+  }
+
+  /**
    * Функция для добавления информации в историю
    *
    * @param historyBlock элемент для отображения истории
@@ -133,12 +148,17 @@
       const paragraph = document.createElement("p");
       paragraph.innerText = JSON.parse(city).name;
       paragraph.className = "font-custom";
+      paragraph.addEventListener("click", showCityDataFromHistory);
       historyBlock.append(paragraph);
     });
   }
 
   localStorage.setItem("cities", JSON.stringify([]));
 
+  /**
+   * Добавление информации в localStorage
+   * @param weather json с информацией о погоде
+   */
   function addCityInStorage(weather) {
     //Получаем города из локального хранилища
     let cities = JSON.parse(localStorage.getItem("cities"));

@@ -111,8 +111,9 @@
     inputCity.value = "";
 
     const weather = await getWeatherByCityName(cityName);
+    addCityInStorage(weather);
     showWeather(weatherInfoBlock, weather);
-    addCityInHistoryBlock(historyBlock, cityName);
+    showHistory(historyBlock);
   }
 
   /**
@@ -121,15 +122,42 @@
    * @param historyBlock элемент для отображения истории
    * @param {string} cityName имя горожа
    */
-  function addCityInHistoryBlock(historyBlock, cityName) {
-    const paragraph = document.createElement("p");
-    paragraph.innerText = cityName;
-    paragraph.className = "font-custom";
+  function showHistory(historyBlock) {
+    let cities = JSON.parse(localStorage.getItem("cities"));
 
-    historyBlock.append(paragraph);
-    const items = historyBlock.querySelectorAll("p");
-    if (items.length > 10) {
-      items.item(0).remove();
+    document.querySelectorAll("p").forEach((e) => e.remove());
+
+    cities.forEach((city) => {
+      const paragraph = document.createElement("p");
+      paragraph.innerText = JSON.parse(city).name;
+      paragraph.className = "font-custom";
+      historyBlock.append(paragraph);
+    });
+  }
+
+  localStorage.setItem("cities", JSON.stringify([]));
+
+  function addCityInStorage(weather) {
+    let cities = JSON.parse(localStorage.getItem("cities"));
+
+    console.log("before cities = " + cities);
+
+    for (let i = 0; i < cities.length; i++) {
+      if (JSON.parse(cities[i]).name === weather.name) {
+        cities.splice(i, 1);
+      }
     }
+    cities.push(JSON.stringify(weather));
+
+    console.log("after cities = " + cities);
+
+    localStorage.setItem("cities", JSON.stringify(cities));
+
+    cities = JSON.parse(localStorage.getItem("cities"));
+
+    if (cities.length > 10) {
+      cities = cities.slice(-10);
+    }
+    localStorage.setItem("cities", JSON.stringify(cities));
   }
 })();

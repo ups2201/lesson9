@@ -1,8 +1,8 @@
 {
-  "name": "lesson6",
+  "name": "lesson9",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "weather.js",
   "private": true,
   "scripts": {
     "test": "jest",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ups2201/lesson6.git"
+    "url": "git+https://github.com/ups2201/lesson9.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ups2201/lesson6/issues"
+    "url": "https://github.com/ups2201/lesson9/issues"
   },
-  "homepage": "https://github.com/ups2201/lesson6#readme",
+  "homepage": "https://github.com/ups2201/lesson9#readme",
   "dependencies": {
     "lodash": "^4.17.21"
   },

@@ -1,3 +1,5 @@
+import "./styles.css";
+
 (async function () {
   // Получаем указатели на нужные элементы
   const button = document.querySelector("button");
@@ -45,7 +47,7 @@
     weatherInfoBlock.innerHTML = `
         <img src="http://openweathermap.org/img/wn/${weatherDataJson.weather[0].icon}@2x.png">
         <div>${weatherDataJson.name}</div>
-        <div>${weatherDataJson.main.temp}</div>
+        <div>${weatherDataJson.main.temp} °C</div>
     `;
     const weatherCityImage = document.querySelector("#weatherCityImage");
     weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${weatherDataJson.coord.lon},${weatherDataJson.coord.lat}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
@@ -55,8 +57,6 @@
    * Функция возвращает (Promise) данные с информацией о погоде
    *
    * https://api.openweathermap.org/data/2.5/weather?units=metric&q={{CITY_NAME}}&appid={{APP_ID}}
-   *  {{CITY_NAME}} имя города
-   *  {{APP_ID}} на ключ приложения
    * Запрос возвращает данные в формате JSON
    *
    * @param {string} cityName имя города
@@ -75,9 +75,7 @@
   /**
    * Функция возвращает (Promise) данные с информацией о погоде
    *
-   * https://api.openweathermap.org/data/2.5/weather?units=metric&q={{CITY_NAME}}&appid={{APP_ID}}
-   *  {{CITY_NAME}} имя города
-   *  {{APP_ID}} на ключ приложения
+   * https://api.openweathermap.org/data/2.5/weather?units=metric&lat={{lat}}&lon={{long}}&appid={{APP_ID}}
    * Запрос возвращает данные в формате JSON
    *
    * @param {number} lat координата

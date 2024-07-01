@@ -3,43 +3,37 @@
 
 <head>
     <title>Online HTML Editor</title>
+    <script defer src="main.js"></script>
 <script defer src="main.js"></script></head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="styles.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="styles.css" rel="stylesheet">
 
 <body>
 
-<table>
-    <tr>
-        <div>
-            <div style="position: relative;" alt="">
-              <i class="fa fa-search" style="position: absolute; top: 50%; left: 8px; transform: translateY(-50%);"></i>
-              <input class="font-custom" placeholder="Weather" type="text" style="padding-left: 30px">
-              <button class="font-custom">Show</button>
-            </div>
+<form>
+    <div>
+        <div alt="" style="position: relative;">
+            <i class="fa fa-search" style="position: absolute; top: 50%; left: 8px; transform: translateY(-50%);"></i>
+            <input class="font-custom" placeholder="Weather" style="padding-left: 30px" type="text">
+            <button class="font-custom">Show</button>
         </div>
-    </tr>
-    <tr>
-        <td class="td">
-            <div id="weatherCityImage"></div>
-        </td>
-        <td class="td">
-            <div>
-                <h1 class="font-custom">
-                    <u>Information weather</u>
-                </h1>
-                <div id = 'weatherInfo' class="font-custom"></div>
-            </div>
-        </td>
-        <td class="td">
-            <h1 class="font-custom">
-                <u>History</u>
-            </h1>
-            <div id="history"></div>
-        </td>
-    </tr>
-</table>
-<script src="main.js"></script>
+    </div>
+</form>
+<div class="block" id="weatherCityImage"></div>
+<div class="block">
+    <h1 class="font-custom">
+        <u>Information weather</u>
+    </h1>
+    <div class="font-custom" id='weatherInfo'></div>
+</div>
+<div class="block">
+    <h1 class="font-custom">
+        <u>History</u>
+    </h1>
+    <div id="history"></div>
+</div>
+
+<script src=".js"></script>
 </body>
 
 </html>

@@ -3,7 +3,8 @@
   font-size: 24px;
 }
 
-.td {
+.block {
+  display: inline-block;
   border-style: solid;
   border-bottom-color: black;
   width: 300px;

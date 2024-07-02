@@ -1,6 +1,8 @@
 import "./styles.css";
 
 (async function () {
+  const urlOpenWeather =
+    "https://api.openweathermap.org/data/2.5/weather?units=metric&appid=7881bfb7be02c74633e5fdee4ff41329";
   // Получаем указатели на нужные элементы
   const button = document.querySelector("button");
   const weatherInfoBlock = document.querySelector("#weatherInfo");
@@ -75,9 +77,7 @@ import "./styles.css";
    */
   async function getWeatherByCityName(cityName) {
     try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${cityName}&appid=7881bfb7be02c74633e5fdee4ff41329`,
-      );
+      const response = await fetch(`${urlOpenWeather}&q=${cityName}`);
       return response.json();
     } catch {
       return { cod: 500, message: `couldn't get weather info` };
@@ -95,9 +95,7 @@ import "./styles.css";
    */
   async function getWeatherByCoords(lat, long) {
     try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?units=metric&lat=${lat}&lon=${long}&appid=7881bfb7be02c74633e5fdee4ff41329`,
-      );
+      const response = await fetch(`${urlOpenWeather}&lat=${lat}&lon=${long}`);
       return response.json();
     } catch {
       return { cod: 500, message: `couldn't get weather info` };

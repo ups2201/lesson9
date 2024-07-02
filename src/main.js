@@ -14,26 +14,38 @@ import "./styles.css";
   button.addEventListener("click", showNewCityData);
 
   /**
+   * Получение координат с сайта geojs
+   * @returns {Promise<any|{cod: number, message: string}>}
+   */
+  async function showGeo() {
+    try {
+      const response = await fetch(`https://get.geojs.io/v1/ip/geo.json`);
+
+      return response.json();
+    } catch {
+      return { cod: 500, message: `couldn't get geo info` };
+    }
+  }
+
+  /**
    * Функция для отображения информции о погоде в текущем местоположении
    */
   function showDefaultCityData() {
-    if (!navigator.geolocation) {
-      console.log("Ваш браузер не дружит с геолокацией...");
-    } else {
-      navigator.geolocation.getCurrentPosition(success, error);
-    }
+    showGeo().then(success, error);
 
     // Если всё хорошо, собираем ссылку
     async function success(position) {
-      const { longitude, latitude } = position.coords;
-      const weatherInfo = await getWeatherByCoords(latitude, longitude);
+      const weatherInfo = await getWeatherByCoords(
+        position.latitude,
+        position.longitude,
+      );
 
       showWeather(weatherInfoBlock, weatherInfo);
     }
 
     // Если всё плохо, просто напишем об этом
     function error() {
-      console.log("Не получается определить вашу геолокацию :(");
+      alert("Не получается определить вашу геолокацию :(");
     }
   }
 

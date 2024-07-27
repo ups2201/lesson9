@@ -9,7 +9,7 @@ export let state = {
   historyCity: [],
   isAboutShow: false,
   isMainFormShow: true,
-  isHistoryShow: false,
+  isHistoryShow: true,
 };
 
 const render = () => {
@@ -28,8 +28,9 @@ const route0 = {
   onEnter: () => {
     state.isMainFormShow = true;
     state.isAboutShow = false;
-    state.currentHeaderPage = "Main Page";
-    state.isHistoryShow = false;
+    state.currentHeaderPage =
+      "Главная страница, по умолчанию отображается погода в текущем городе";
+    state.isHistoryShow = true;
     render();
   },
 };
@@ -57,7 +58,8 @@ const route2 = {
     state.isMainFormShow = true;
     state.isAboutShow = false;
     state.isHistoryShow = true;
-    state.currentHeaderPage = "Weather Page";
+    state.currentHeaderPage =
+      "Страница о погоде в городе, который выбрали из истории";
     render();
   },
 };
@@ -86,4 +88,8 @@ document.body.addEventListener("click", (event) => {
   event.preventDefault();
   const url = event.target.href;
   router.go(url, { url });
+});
+
+document.querySelector("form").addEventListener("submit", (event) => {
+  event.preventDefault();
 });

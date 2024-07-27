@@ -21,18 +21,22 @@ import "./router";
    * Функция для отображения информции о погоде в текущем местоположении
    */
   function showDefaultCityData() {
-    console.log("showDefaultCityData");
     showGeo().then(success, error);
 
     // Если всё хорошо, собираем ссылку
     async function success(position) {
-      console.log("await getWeatherByCoords");
-      const weatherInfo = await getWeatherByCoords(
-        position.latitude,
-        position.longitude,
-      );
-
+      let weatherInfo;
+      if (position.city !== "") {
+        weatherInfo = await getWeatherByCityName(position.city);
+      } else {
+        weatherInfo = await getWeatherByCoords(
+          position.latitude,
+          position.longitude,
+        );
+      }
+      addCityInStorage(weatherInfo);
       showWeather(weatherInfoBlock, weatherInfo);
+      showHistory(historyBlock);
     }
 
     // Если всё плохо, просто напишем об этом

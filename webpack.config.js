@@ -30,15 +30,15 @@ module.exports = {
     ],
   },
   devServer: {
-    watchFiles: ["./dist/index.html"],
+    watchFiles: ["./src/index.html"],
     historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./dist/index.html",
+      template: "./src/index.html",
     }),
     new HtmlWebpackPlugin({
-      template: "./dist/index.html",
+      template: "./src/index.html",
       filename: "404.html",
     }),
     // new webpack.DefinePlugin({

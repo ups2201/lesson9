@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/ups2201/lesson9#readme",
   "dependencies": {
+    "@amishurinskiy/router": "^1.0.1",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

@@ -2,13 +2,14 @@ import "./styles.css";
 import { showGeo } from "./apiGeo";
 import { getWeatherByCityName, getWeatherByCoords } from "./apiWeather";
 import { addCityInStorage } from "./localStorage";
-// import "./router";
-// import {router, state} from "./router";
-import {RouterFactory, RouterMode} from "@amishurinskiy/router/dist/RouterFactory";
+import {
+  RouterFactory,
+  RouterMode,
+} from "@amishurinskiy/router/dist/RouterFactory";
 
-// const weatherInfoBlock = document.querySelector("#weatherInfo");
 export let state = {
-  currentHeaderPage: "Главная страница, по умолчанию отображается погода в текущем городе",
+  currentHeaderPage:
+    "Главная страница, по умолчанию отображается погода в текущем городе",
   cityCurrent: undefined,
   historyCity: [],
   isAboutShow: false,
@@ -17,7 +18,7 @@ export let state = {
 };
 
 (async function () {
-// Получаем указатели на нужные элементы
+  // Получаем указатели на нужные элементы
   const button = document.querySelector("button");
   const inputCity = document.querySelector("input");
   const historyBlock = document.querySelector("#history");
@@ -37,8 +38,8 @@ export let state = {
     async function success(position) {
       let weatherInfo;
       weatherInfo = await getWeatherByCoords(
-          position.latitude,
-          position.longitude,
+        position.latitude,
+        position.longitude,
       );
       if (weatherInfo.cod === 200) {
         state.cityCurrent = weatherInfo;
@@ -62,7 +63,7 @@ export let state = {
    * @param {string} cityName имя города
    */
   async function showNewCityData(ev, cityName) {
-    console.log("showNewCityData")
+    console.log("showNewCityData");
     // чтобы не перезагружать страницу
     ev.preventDefault();
 
@@ -126,93 +127,95 @@ export let state = {
 
   localStorage.setItem("cities", JSON.stringify([]));
 
-
-/**
- * Отображение информции о погоде в городе
- *
- * @param weatherInfoBlock элемент информации о погоде
- * @param weatherDataJson json с данными о погоде
- */
-function showWeather(weatherDataJson) {
-  state.cityCurrent = weatherDataJson;
-  document.querySelector("#weatherInfo").innerHTML = `
+  /**
+   * Отображение информции о погоде в городе
+   *
+   * @param weatherInfoBlock элемент информации о погоде
+   * @param weatherDataJson json с данными о погоде
+   */
+  function showWeather(weatherDataJson) {
+    state.cityCurrent = weatherDataJson;
+    document.querySelector("#weatherInfo").innerHTML = `
         <img src="http://openweathermap.org/img/wn/${weatherDataJson.weather[0].icon}@2x.png">
         <div>${weatherDataJson.name}</div>
         <div>${weatherDataJson.main.temp} °C</div>
     `;
-  const weatherCityImage = document.querySelector("#weatherCityImage");
-  weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${weatherDataJson.coord.lon},${weatherDataJson.coord.lat}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
-}
+    const weatherCityImage = document.querySelector("#weatherCityImage");
+    weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${weatherDataJson.coord.lon},${weatherDataJson.coord.lat}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
+  }
 
-function showAboutPage() {
-  state.currentHeaderPage = "Это приложение из ДЗ - https://github.com/vvscode/otus--javascript-basic/blob/master/lessons/lesson40/hw.md";
-  state.isMainFormShow = false;
-  state.isHistoryShow = false;
-  state.isAboutShow = true;
-  render();
-}
+  function showAboutPage() {
+    state.currentHeaderPage =
+      "Это приложение из ДЗ - https://github.com/vvscode/otus--javascript-basic/blob/master/lessons/lesson40/hw.md";
+    state.isMainFormShow = false;
+    state.isHistoryShow = false;
+    state.isAboutShow = true;
+    render();
+  }
 
-function showMainPage() {
-  state.currentHeaderPage = "Главная страница, по умолчанию отображается погода в текущем городе";
-  state.isMainFormShow = true;
-  state.isHistoryShow = true;
-  state.isAboutShow = false;
-  render();
-}
+  function showMainPage() {
+    state.currentHeaderPage =
+      "Главная страница, по умолчанию отображается погода в текущем городе";
+    state.isMainFormShow = true;
+    state.isHistoryShow = true;
+    state.isAboutShow = false;
+    render();
+  }
 
-function showCityWeatherPage() {
-  console.log("showCityWeatherPage")
-  state.currentHeaderPage = "Страница о погоде в городе, который выбрали из истории";
-  state.isMainFormShow = true;
-  state.isHistoryShow = true;
-  state.isAboutShow = false;
-  showWeather(history.state.cityCurrent);
-  render();
-}
+  function showCityWeatherPage() {
+    console.log("showCityWeatherPage");
+    state.currentHeaderPage =
+      "Страница о погоде в городе, который выбрали из истории";
+    state.isMainFormShow = true;
+    state.isHistoryShow = true;
+    state.isAboutShow = false;
+    showWeather(history.state.cityCurrent);
+    render();
+  }
 
-function render() {
-  document.querySelector("#main").hidden = !state.isMainFormShow;
-  document.querySelector("#about").hidden = !state.isAboutShow;
-  document.querySelector("#historyBlock").hidden = !state.isHistoryShow;
-  document.querySelector("#message").innerHTML = `<h2>${state.currentHeaderPage}</h2>`;
-  console.log(state)
-}
+  function render() {
+    document.querySelector("#main").hidden = !state.isMainFormShow;
+    document.querySelector("#about").hidden = !state.isAboutShow;
+    document.querySelector("#historyBlock").hidden = !state.isHistoryShow;
+    document.querySelector("#message").innerHTML =
+      `<h2>${state.currentHeaderPage}</h2>`;
+    console.log(state);
+  }
 
-const router = new RouterFactory().create(RouterMode.HISTORY_API);
+  const router = new RouterFactory().create(RouterMode.HISTORY_API);
 
-const route0 = {
-  match: "/",
-  onEnter: showMainPage,
-};
-router.addRoute(route0);
+  const route0 = {
+    match: "/",
+    onEnter: showMainPage,
+  };
+  router.addRoute(route0);
 
-const route1 = {
-  match: "/about",
-  onEnter: showAboutPage,
-};
-router.addRoute(route1);
+  const route1 = {
+    match: "/about",
+    onEnter: showAboutPage,
+  };
+  router.addRoute(route1);
 
-const route2 = {
-  match: (path) => {
-    return JSON.parse(localStorage.getItem("cities"))
+  const route2 = {
+    match: (path) => {
+      return JSON.parse(localStorage.getItem("cities"))
         .map((city) => JSON.parse(city).name)
         .includes(path.replace("/", ""));
-  },
-  onEnter: showCityWeatherPage,
-};
-router.addRoute(route2);
+    },
+    onEnter: showCityWeatherPage,
+  };
+  router.addRoute(route2);
 
-document.body.addEventListener("click", (event) => {
-  if (!event.target.matches("a")) {
-    return;
-  }
-  event.preventDefault();
-  const url = event.target.href;
-  router.go(url, state);
-});
+  document.body.addEventListener("click", (event) => {
+    if (!event.target.matches("a")) {
+      return;
+    }
+    event.preventDefault();
+    const url = event.target.href;
+    router.go(url, state);
+  });
 
-document.querySelector("form").addEventListener("submit", (event) => {
-  event.preventDefault();
-});
-
+  document.querySelector("form").addEventListener("submit", (event) => {
+    event.preventDefault();
+  });
 })();

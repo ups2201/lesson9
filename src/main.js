@@ -215,9 +215,9 @@ export let state = {
     event.preventDefault();
   });
 
-  if (IS_PRODUCTION) {
-    document.querySelectorAll(".menu").forEach((link) => {
-      link.href = PREFIX + link.href;
-    });
-  }
+  // if (IS_PRODUCTION) {
+  //   document.querySelectorAll(".menu").forEach((link) => {
+  //     link.href = PREFIX + link.href;
+  //   });
+  // }
 })();

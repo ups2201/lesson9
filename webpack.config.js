@@ -1,14 +1,14 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { DefinePlugin } = require("webpack");
 const path = require("path");
-const PREFIX = process.env.NODE_ENV == "production" ? "/lesson9" : "";
+const PREFIX = process.env.NODE_ENV == "production" ? "/lesson9" : "/";
 
 module.exports = {
   entry: "./src/main.js",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: PREFIX + "/",
+    publicPath: PREFIX,
   },
   module: {
     rules: [
@@ -44,11 +44,8 @@ module.exports = {
     }),
     new DefinePlugin({
       PREFIX: JSON.stringify(PREFIX),
+      IS_PRODUCTION: process.env.NODE_ENV == "production",
     }),
-    // new webpack.DefinePlugin({
-    //   IS_PRODUCTION: NODE_ENV == "production",
-    //   PREFIX: JSON.stringify(PREFIX),
-    // }),
   ],
   mode: "development",
 };

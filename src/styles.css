@@ -1,14 +1,33 @@
 .font-custom {
   font-family: "Comic Sans MS";
   font-size: 24px;
+  margin: 2px;
+}
+.view {
+  padding: 10px 0;
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  column-gap: 10px;
+  width: 900px;
 }
 
 .block {
-  display: inline-block;
   border-style: solid;
+  border-width: 2px;
   border-bottom-color: black;
   width: 300px;
   height: 300px;
   text-align: center;
   vertical-align: top;
+}
+
+#history {
+  display: grid;
+  grid-template-rows: repeat(5, 1em);
+  row-gap: 10px;
+  height: 10em;
+}
+
+#history a {
+  height: 0.8em;
 }

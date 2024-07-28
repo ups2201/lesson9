@@ -9,7 +9,7 @@ import {RouterFactory, RouterMode} from "@amishurinskiy/router/dist/RouterFactor
 // const weatherInfoBlock = document.querySelector("#weatherInfo");
 export let state = {
   currentHeaderPage: "Главная страница, по умолчанию отображается погода в текущем городе",
-  cityCurrent: false,
+  cityCurrent: undefined,
   historyCity: [],
   isAboutShow: false,
   isMainFormShow: true,
@@ -36,15 +36,13 @@ export let state = {
     // Если всё хорошо, собираем ссылку
     async function success(position) {
       let weatherInfo;
-      if (position.city !== "") {
-        weatherInfo = await getWeatherByCityName(position.city);
-      } else {
-        weatherInfo = await getWeatherByCoords(
+      weatherInfo = await getWeatherByCoords(
           position.latitude,
           position.longitude,
-        );
-      }
+      );
       if (weatherInfo.cod === 200) {
+        state.cityCurrent = weatherInfo;
+        router.go("/", state);
         addCityInStorage(weatherInfo);
         showWeather(weatherInfo);
         showHistory(historyBlock);
@@ -56,8 +54,6 @@ export let state = {
       alert("Не получается определить вашу геолокацию :(");
     }
   }
-
-
 
   /**
    * Функция для отображение информации о погоде в введеном городе
@@ -78,12 +74,6 @@ export let state = {
 
     const weather = await getWeatherByCityName(cityName);
     if (weather.cod === 200) {
-      // document.querySelector("#main").hidden = !state.isMainFormShow;
-      // document.querySelector("#about").hidden = !state.isAboutShow;
-      // document.querySelector("#historyBlock").hidden = !state.isHistoryShow;
-      // document.querySelector("#message").innerHTML =
-      //     `<h2>${state.currentHeaderPage}</h2>`;
-
       state.cityCurrent = weather;
       addCityInStorage(weather);
       showWeather(weather);
@@ -106,8 +96,8 @@ export let state = {
 
     const weather = await getWeatherByCityName(this.innerText);
     if (weather.cod === 200) {
-      showCityWeatherPage();
       state.cityCurrent = weather;
+      showCityWeatherPage();
       showWeather(weather);
     }
     router.go(url, state);
@@ -144,9 +134,6 @@ export let state = {
  * @param weatherDataJson json с данными о погоде
  */
 function showWeather(weatherDataJson) {
-  console.log("showWeather");
-  console.log(weatherDataJson);
-  console.log(weatherDataJson.weather[0].icon);
   state.cityCurrent = weatherDataJson;
   document.querySelector("#weatherInfo").innerHTML = `
         <img src="http://openweathermap.org/img/wn/${weatherDataJson.weather[0].icon}@2x.png">
@@ -207,13 +194,6 @@ router.addRoute(route1);
 
 const route2 = {
   match: (path) => {
-    console.log("path");
-    console.log(path);
-    console.log("route2");
-    console.log(JSON.parse(localStorage.getItem("cities"))
-        .map((city) => JSON.parse(city).name)
-        .includes(path.replace("/", "")));
-
     return JSON.parse(localStorage.getItem("cities"))
         .map((city) => JSON.parse(city).name)
         .includes(path.replace("/", ""));
@@ -221,15 +201,6 @@ const route2 = {
   onEnter: showCityWeatherPage,
 };
 router.addRoute(route2);
-
-// document.body.addEventListener("click", (event) => {
-//   if (!event.target.matches("p")) {
-//     return;
-//   }
-//   event.preventDefault();
-//   const url = event.target.innerHTML;
-//   router.go(url, state);
-// });
 
 document.body.addEventListener("click", (event) => {
   if (!event.target.matches("a")) {

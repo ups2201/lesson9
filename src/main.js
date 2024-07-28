@@ -126,7 +126,7 @@ export let state = {
       historyBlock.append(paragraph);
 
       if (IS_PRODUCTION) {
-        document.querySelectorAll(a).forEach((link) => {
+        document.querySelectorAll("a").forEach((link) => {
           link.href = PREFIX + link.href;
         });
       }

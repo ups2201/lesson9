@@ -214,9 +214,7 @@ export let state = {
 
   if (IS_PRODUCTION) {
     document.querySelectorAll(".menu").forEach((link) => {
-      console.log("link.href = " + link.href);
-      console.log("PREFIX + link.href = " + PREFIX + link.href);
-      link.href = PREFIX + link.href;
+      link.href = PREFIX + link.getAttribute("href");
     });
   }
 })();

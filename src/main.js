@@ -11,7 +11,6 @@ export let state = {
   currentHeaderPage:
     "Главная страница, по умолчанию отображается погода в текущем городе",
   cityCurrent: undefined,
-  historyCity: [],
   isAboutShow: false,
   isMainFormShow: true,
   isHistoryShow: true,
@@ -63,7 +62,6 @@ export let state = {
    * @param {string} cityName имя города
    */
   async function showNewCityData(ev, cityName) {
-    console.log("showNewCityData");
     // чтобы не перезагружать страницу
     ev.preventDefault();
 
@@ -119,7 +117,6 @@ export let state = {
       const paragraph = document.createElement("p");
       paragraph.innerText = JSON.parse(city).name;
       paragraph.className = "font-custom";
-      console.log("showCityDataFromHistory");
       paragraph.addEventListener("click", showCityDataFromHistory);
       historyBlock.append(paragraph);
     });
@@ -159,11 +156,12 @@ export let state = {
     state.isMainFormShow = true;
     state.isHistoryShow = true;
     state.isAboutShow = false;
+
+    showWeather(history.state.cityCurrent);
     render();
   }
 
-  function showCityWeatherPage() {
-    console.log("showCityWeatherPage");
+  function showCityWeatherPage(args) {
     state.currentHeaderPage =
       "Страница о погоде в городе, который выбрали из истории";
     state.isMainFormShow = true;
@@ -179,21 +177,14 @@ export let state = {
     document.querySelector("#historyBlock").hidden = !state.isHistoryShow;
     document.querySelector("#message").innerHTML =
       `<h2>${state.currentHeaderPage}</h2>`;
-    console.log(state);
   }
 
   const router = new RouterFactory().create(RouterMode.HISTORY_API);
 
-  const route0 = {
-    match: "/",
-    onEnter: showMainPage,
-  };
+  const route0 = { match: "/", onEnter: showMainPage };
   router.addRoute(route0);
 
-  const route1 = {
-    match: "/about",
-    onEnter: showAboutPage,
-  };
+  const route1 = { match: "/about", onEnter: showAboutPage };
   router.addRoute(route1);
 
   const route2 = {
@@ -202,7 +193,7 @@ export let state = {
         .map((city) => JSON.parse(city).name)
         .includes(path.replace("/", ""));
     },
-    onEnter: showCityWeatherPage,
+    onEnter: async (args) => showCityWeatherPage(args),
   };
   router.addRoute(route2);
 

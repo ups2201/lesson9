@@ -220,5 +220,4 @@ export let state = {
       link.href = PREFIX + link.href;
     });
   }
-
 })();

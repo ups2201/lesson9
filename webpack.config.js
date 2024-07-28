@@ -2,7 +2,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { DefinePlugin } = require("webpack");
 const path = require("path");
 const PREFIX = process.env.NODE_ENV == "production" ? "/lesson9" : "";
-// const PREFIX =  '/lesson9/'
 
 module.exports = {
   entry: "./src/main.js",
@@ -32,7 +31,7 @@ module.exports = {
     ],
   },
   devServer: {
-    watchFiles: ["./dict/index.html"],
+    watchFiles: ["./src/index.html"],
     historyApiFallback: true,
   },
   plugins: [

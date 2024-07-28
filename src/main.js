@@ -31,6 +31,9 @@ export let state = {
    * Функция для отображения информции о погоде в текущем местоположении
    */
   function showDefaultCityData() {
+    console.log("PREFIX");
+    console.log(PREFIX);
+
     showGeo().then(success, error);
 
     // Если всё хорошо, собираем ссылку
@@ -42,7 +45,7 @@ export let state = {
       );
       if (weatherInfo.cod === 200) {
         state.cityCurrent = weatherInfo;
-        router.go("/", state);
+        router.go(PREFIX + "/", state);
         addCityInStorage(weatherInfo);
         showWeather(weatherInfo);
         showHistory(historyBlock);
@@ -118,7 +121,7 @@ export let state = {
       paragraph.classList.add("font-custom");
       paragraph.classList.add("cityHistory");
       paragraph.innerText = JSON.parse(city).name;
-      paragraph.href = "/" + JSON.parse(city).name;
+      paragraph.href = PREFIX + JSON.parse(city).name;
       paragraph.addEventListener("click", showCityDataFromHistory);
       historyBlock.append(paragraph);
     });
@@ -183,17 +186,17 @@ export let state = {
 
   const router = new RouterFactory().create(RouterMode.HISTORY_API);
 
-  const route0 = { match: "/", onEnter: showMainPage };
+  const route0 = { match: PREFIX + "/", onEnter: showMainPage };
   router.addRoute(route0);
 
-  const route1 = { match: "/about", onEnter: showAboutPage };
+  const route1 = { match: PREFIX + "/about", onEnter: showAboutPage };
   router.addRoute(route1);
 
   const route2 = {
     match: (path) => {
       return JSON.parse(localStorage.getItem("cities"))
         .map((city) => JSON.parse(city).name)
-        .includes(path.replace("/", ""));
+        .includes(path.replace(PREFIX + "/", ""));
     },
     onEnter: async (args) => showCityWeatherPage(args),
   };

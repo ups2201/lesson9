@@ -121,15 +121,9 @@ export let state = {
       paragraph.classList.add("font-custom");
       paragraph.classList.add("cityHistory");
       paragraph.innerText = JSON.parse(city).name;
-      paragraph.href = "/" + JSON.parse(city).name;
+      paragraph.href = PREFIX + "/" + JSON.parse(city).name;
       paragraph.addEventListener("click", showCityDataFromHistory);
       historyBlock.append(paragraph);
-
-      if (IS_PRODUCTION) {
-        document.querySelectorAll("a").forEach((link) => {
-          link.href = PREFIX + link.href;
-        });
-      }
     });
   }
 
@@ -220,4 +214,10 @@ export let state = {
   document.querySelector("form").addEventListener("submit", (event) => {
     event.preventDefault();
   });
+
+  if (IS_PRODUCTION) {
+    document.querySelectorAll(".menu").forEach((link) => {
+      link.href = PREFIX + link.href;
+    });
+  }
 })();

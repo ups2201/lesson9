@@ -214,10 +214,4 @@ export let state = {
   document.querySelector("form").addEventListener("submit", (event) => {
     event.preventDefault();
   });
-
-  // if (IS_PRODUCTION) {
-  //   document.querySelectorAll(".menu").forEach((link) => {
-  //     link.href = PREFIX + link.href;
-  //   });
-  // }
 })();

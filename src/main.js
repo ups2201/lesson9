@@ -31,9 +31,6 @@ export let state = {
    * Функция для отображения информции о погоде в текущем местоположении
    */
   function showDefaultCityData() {
-    console.log("PREFIX");
-    console.log(PREFIX);
-
     showGeo().then(success, error);
 
     // Если всё хорошо, собираем ссылку

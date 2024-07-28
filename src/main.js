@@ -87,7 +87,7 @@ export let state = {
    * @param ev
    */
   async function showCityDataFromHistory(event) {
-    if (!event.target.matches("p")) {
+    if (!event.target.classList.contains("cityHistory")) {
       return;
     }
     event.preventDefault();
@@ -111,12 +111,14 @@ export let state = {
   function showHistory(historyBlock) {
     let cities = JSON.parse(localStorage.getItem("cities"));
 
-    document.querySelectorAll("p").forEach((e) => e.remove());
+    document.querySelectorAll(".cityHistory").forEach((e) => e.remove());
 
     cities.forEach((city) => {
-      const paragraph = document.createElement("p");
+      const paragraph = document.createElement("a");
+      paragraph.classList.add("font-custom");
+      paragraph.classList.add("cityHistory");
       paragraph.innerText = JSON.parse(city).name;
-      paragraph.className = "font-custom";
+      paragraph.href = "/" + JSON.parse(city).name;
       paragraph.addEventListener("click", showCityDataFromHistory);
       historyBlock.append(paragraph);
     });
@@ -198,7 +200,7 @@ export let state = {
   router.addRoute(route2);
 
   document.body.addEventListener("click", (event) => {
-    if (!event.target.matches("a")) {
+    if (!event.target.classList.contains("menu")) {
       return;
     }
     event.preventDefault();

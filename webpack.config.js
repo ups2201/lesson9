@@ -1,13 +1,15 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { DefinePlugin } = require("webpack");
 const path = require("path");
-// const PREFIX =  process.env.NODE_ENV == "production" ? '/otus-spa-deploy-2023-12' : ''
+const PREFIX = process.env.NODE_ENV == "production" ? "/lesson9" : "";
+// const PREFIX =  '/lesson9/'
 
 module.exports = {
   entry: "./src/main.js",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
+    publicPath: PREFIX + "/",
   },
   module: {
     rules: [
@@ -30,7 +32,7 @@ module.exports = {
     ],
   },
   devServer: {
-    watchFiles: ["./src/index.html"],
+    watchFiles: ["./dict/index.html"],
     historyApiFallback: true,
   },
   plugins: [
@@ -40,6 +42,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       filename: "404.html",
+    }),
+    new DefinePlugin({
+      PREFIX: JSON.stringify(PREFIX),
     }),
     // new webpack.DefinePlugin({
     //   IS_PRODUCTION: NODE_ENV == "production",

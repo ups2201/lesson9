@@ -10,6 +10,7 @@
     "lint:fix": "prettier --write ./src && eslint ./src --fix",
     "prepare": "husky install",
     "build": "webpack",
+    "build:prod": "webpack --define-process-env-node-env production",
     "watch": "webpack --watch",
     "dev": "webpack serve --open --mode=development"
   },

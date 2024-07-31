@@ -23,3 +23,13 @@ export function addCityInStorage(weather) {
 
   localStorage.setItem("cities", JSON.stringify(cities));
 }
+
+export function getCitiesFromStorage() {
+  return JSON.parse(localStorage.getItem("cities"));
+}
+
+export function getCityFromStorage(cityName) {
+  return JSON.parse(localStorage.getItem("cities")).find(
+    (cityData) => cityData.name === cityName,
+  );
+}

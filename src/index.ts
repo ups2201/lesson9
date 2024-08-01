@@ -10,7 +10,6 @@ import "./styles.css";
 const loading = document.querySelector("#loading") as HTMLElement;
 document.addEventListener("DOMContentLoaded", showDefaultCityData);
 
-
 type RenderData = {
     isLoading: boolean;
     currentCity: any;
@@ -33,32 +32,36 @@ function showDefaultCityData() {
 }
 
 function getCityWeatherFromApi(ev) {
-    store.dispatch(actions.loading());
-    // чтобы не перезагружать страницу
-    ev.preventDefault();
-    let inputCity = document.querySelector("input");
-    let cityName = inputCity.value;
-    inputCity.value = "";
+    return (dispatch: typeof store.dispatch, getState: typeof store.getState) => {
+        dispatch(actions.loading());
+        // чтобы не перезагружать страницу
+        ev.preventDefault();
+        let inputCity = document.querySelector("input");
+        let cityName = inputCity.value;
+        inputCity.value = "";
 
-    getWeatherByCityName(cityName)
-        .then((data) => {
-            store.dispatch(actions.success(data));
-        })
-        .catch((error) => {
-            store.dispatch(actions.error(error));
-        });
+        getWeatherByCityName(cityName)
+            .then((data) => {
+                dispatch(actions.success(data));
+            })
+            .catch((error) => {
+                dispatch(actions.error(error));
+            });
+    }
 }
 
-async function getCityWeatherFromHistory(ev) {
-    store.dispatch(actions.loading());
-    const cityName = ev.target.innerText;
-    getCityFromStorage(cityName)
-        .then((data) => {
-            store.dispatch(actions.success(data))
-        })
-        .catch((error) => {
-            store.dispatch(actions.error(error))
-        });
+function getCityWeatherFromHistory(ev) {
+    return (dispatch: typeof store.dispatch, getState: typeof store.getState) => {
+        dispatch(actions.loading());
+        const cityName = ev.target.innerText;
+        getCityFromStorage(cityName)
+            .then((data) => {
+                dispatch(actions.success(data))
+            })
+            .catch((error) => {
+                dispatch(actions.error(error))
+            });
+    }
 }
 
 const render = (props: RenderData) => {
@@ -75,7 +78,7 @@ const render = (props: RenderData) => {
         loading.innerHTML = "";
         return;
     }
-    document.querySelector(".show")?.addEventListener("click", getCityWeatherFromApi);
+    document.querySelector(".show")?.addEventListener("click", (ev) => store.dispatch(getCityWeatherFromApi(ev) as any));
 };
 
 const selectData = (state: State): RenderData => ({

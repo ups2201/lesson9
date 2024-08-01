@@ -1,4 +1,5 @@
 import { getCitiesFromStorage } from "./localStorage";
+import { store } from "./store";
 
 export function showWeather(weatherDataJson) {
   document.querySelector("#weatherInfo").innerHTML = `
@@ -20,7 +21,9 @@ export function viewHistory(getCityWeatherFromHistory) {
       paragraph.classList.add("font-custom");
       paragraph.classList.add("cityHistory");
       paragraph.innerText = city.name;
-      paragraph.addEventListener("click", getCityWeatherFromHistory);
+      paragraph.addEventListener("click", (ev) =>
+        store.dispatch(getCityWeatherFromHistory(ev)),
+      );
       historyBlock.append(paragraph);
     });
   });

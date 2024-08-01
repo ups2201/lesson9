@@ -1,10 +1,10 @@
 import { State } from "./reducer";
 import { store } from "./store";
-import {viewHistory, showWeather} from "./view.js";
-import {getWeatherByCityName, getWeatherByCoords} from "./apiWeather.js";
-import {showGeo} from "./apiGeo.js";
+import {viewHistory, showWeather} from "./view";
+import {getWeatherByCityName, getWeatherByCoords} from "./apiWeather";
+import {showGeo} from "./apiGeo";
 import * as actions from "./actions";
-import {addCityInStorage, getCityFromStorage} from "./localStorage.js";
+import {addCityInStorage, getCityFromStorage} from "./localStorage";
 import "./styles.css";
 
 const loading = document.querySelector("#loading") as HTMLElement;

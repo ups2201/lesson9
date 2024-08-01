@@ -3,4 +3,7 @@ import { apiReducer } from "./reducer";
 import { loggerMiddleware } from "./logger";
 import { thunk } from "redux-thunk";
 
-export const store = createStore(apiReducer, applyMiddleware(loggerMiddleware, thunk));
+export const store = createStore(
+  apiReducer,
+  applyMiddleware(loggerMiddleware, thunk),
+);

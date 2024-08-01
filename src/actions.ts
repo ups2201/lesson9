@@ -1,13 +1,13 @@
 export const loading = () => ({
-    type: "LOADING",
+  type: "LOADING",
 });
 
 export const success = (payload: any) => ({
-    type: "SUCCESS",
-    payload,
+  type: "SUCCESS",
+  payload,
 });
 
 export const error = (error: Error) => ({
-    type: "ERROR",
-    error,
+  type: "ERROR",
+  error,
 });

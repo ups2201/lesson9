@@ -72,7 +72,6 @@ const render = (props: RenderData) => {
         return (loading.innerHTML = `<h1 style="color: red">${props.error.message}</h1>`);
     }
     if (props.currentCity) {
-        console.log(props.currentCity)
         showWeather(props.currentCity);
         addCityInStorage(props.currentCity);
         showHistory(loadDataFromHistory);

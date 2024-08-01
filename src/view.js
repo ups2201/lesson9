@@ -12,19 +12,16 @@ export function showWeather(weatherDataJson) {
 
 export function showHistory(loadDataFromHistory) {
   document.querySelectorAll(".cityHistory").forEach((e) => e.remove());
-  let citiesPromise = getCitiesFromStorage()
-    .then((cities) => {
-      const historyBlock = document.querySelector("#history");
-      console.log(cities);
-      cities.forEach((city) => {
-        city = JSON.parse(city);
-        const paragraph = document.createElement("p");
-        paragraph.classList.add("font-custom");
-        paragraph.classList.add("cityHistory");
-        paragraph.innerText = city.name;
-        paragraph.addEventListener("click", loadDataFromHistory);
-        historyBlock.append(paragraph);
-      });
-    })
-    .catch(() => console.log("error"));
+  let citiesPromise = getCitiesFromStorage().then((cities) => {
+    const historyBlock = document.querySelector("#history");
+    cities.forEach((city) => {
+      city = JSON.parse(city);
+      const paragraph = document.createElement("p");
+      paragraph.classList.add("font-custom");
+      paragraph.classList.add("cityHistory");
+      paragraph.innerText = city.name;
+      paragraph.addEventListener("click", loadDataFromHistory);
+      historyBlock.append(paragraph);
+    });
+  });
 }

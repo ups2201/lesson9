@@ -20,7 +20,7 @@ function showDefaultCityData() {
   store.dispatch(actions.loading());
   showGeo()
     .then(async (data) => {
-      let weatherInfo = await getWeatherByCoords(data.latitude, data.longitude);
+      const weatherInfo = await getWeatherByCoords(data.latitude, data.longitude);
       store.dispatch(actions.success(weatherInfo));
     })
     .catch((error) => {
@@ -33,8 +33,8 @@ function getCityWeatherFromApi(ev) {
     dispatch(actions.loading());
     // чтобы не перезагружать страницу
     ev.preventDefault();
-    let inputCity = document.querySelector("input");
-    let cityName = inputCity.value;
+    const inputCity = document.querySelector("input");
+    const cityName = inputCity.value;
     inputCity.value = "";
 
     getWeatherByCityName(cityName)

@@ -14,7 +14,7 @@ export function showWeather(weatherDataJson) {
 
 export function viewHistory() {
   document.querySelectorAll(".cityHistory").forEach((e) => e.remove());
-  let citiesPromise = getCitiesFromStorage().then((cities) => {
+  const citiesPromise = getCitiesFromStorage().then((cities) => {
     const historyBlock = document.querySelector("#history");
     cities.forEach((city) => {
       city = JSON.parse(city);

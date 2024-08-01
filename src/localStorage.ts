@@ -35,7 +35,7 @@ export async function getCitiesFromStorage() {
 
 export async function getCityFromStorage(cityName) {
   const cities = JSON.parse(localStorage.getItem("cities"));
-  let result = cities.find(
+  const result = cities.find(
     (cityData) => JSON.parse(cityData).name === cityName,
   );
   return JSON.parse(result);

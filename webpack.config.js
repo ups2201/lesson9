@@ -4,7 +4,7 @@ const path = require("path");
 // const PREFIX = process.env.NODE_ENV === "production" ? "/lesson9" : "";
 
 module.exports = {
-  entry: "./src/reduxApp/index.ts",
+  entry: "./src/index.ts",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
@@ -42,15 +42,14 @@ module.exports = {
   },
   devServer: {
     static: "./dist",
-    // watchFiles: ["./dist/index.html"],
     historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/reduxApp/index.html",
+      template: "./src/index.html",
     }),
     new HtmlWebpackPlugin({
-      template: "./src/reduxApp/index.html",
+      template: "./src/index.html",
       filename: "404.html",
     }),
     // new DefinePlugin({

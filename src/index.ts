@@ -1,12 +1,10 @@
 import { State } from "./reducer";
 import { store } from "./store";
 import {showHistory, showWeather} from "./view.js";
-import {getWeatherByCityName, getWeatherByCoords} from "./../apiWeather.js";
-import {showGeo} from "./../apiGeo.js";
+import {getWeatherByCityName, getWeatherByCoords} from "./apiWeather.js";
+import {showGeo} from "./apiGeo.js";
 import * as actions from "./actions";
-import { getTodos } from "./api";
-import {addCityInStorage, getCitiesFromStorage, getCityFromStorage, setCities} from "./localStorage.js";
-import {error} from "./actions";
+import {addCityInStorage, getCityFromStorage} from "./localStorage.js";
 import "./styles.css";
 
 const loading = document.querySelector("#loading") as HTMLElement;
@@ -34,10 +32,10 @@ function showDefaultCityData() {
         });
 }
 
-async function show() {
+async function showCityFromApi(ev) {
     store.dispatch(actions.loading());
     // чтобы не перезагружать страницу
-    // ev.preventDefault();
+    ev.preventDefault();
     let inputCity = document.querySelector("input");
     let cityName;
     if (cityName === undefined) {
@@ -54,11 +52,10 @@ async function show() {
         });
 }
 
-async function loadDataFromHistory() {
-    // put your code here
+async function loadDataFromHistory(ev) {
     store.dispatch(actions.loading());
-    // setCities();
-    getCityFromStorage('Vologda')
+    const cityName = ev.target.innerText;
+    getCityFromStorage(cityName)
         .then((data) => {
             store.dispatch(actions.success(data))
         })
@@ -78,13 +75,11 @@ const render = (props: RenderData) => {
         console.log(props.currentCity)
         showWeather(props.currentCity);
         addCityInStorage(props.currentCity);
-        showHistory();
+        showHistory(loadDataFromHistory);
         loading.innerHTML = "";
         return;
     }
-
-    // el.querySelector("button")?.addEventListener("click", loadDataFromHistory);
-    document.querySelector(".show")?.addEventListener("click", show);
+    document.querySelector(".show")?.addEventListener("click", showCityFromApi);
 };
 
 const selectData = (state: State): RenderData => ({
@@ -92,9 +87,6 @@ const selectData = (state: State): RenderData => ({
     currentCity: state.currentCity,
     error: state.error,
 });
-
-console.log(selectData)
-console.log(store.getState())
 
 render(selectData(store.getState()));
 store.subscribe(() => render(selectData(store.getState())));

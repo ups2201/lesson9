@@ -6,20 +6,14 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 <body>
-<header>
-  <nav style="display: flex; justify-content: space-around">
-    <a href="/" class="menu">Главная</a>
-    <a href="/about" class="menu">О проекте</a>
-  </nav>
-</header>
-<article id="message"></article>
+<article ><div id="message"></div></article>
 <article id="main">
     <form>
         <div>
             <div alt="" style="position: relative;">
                 <i class="fa fa-search" style="position: absolute; top: 50%; left: 8px; transform: translateY(-50%);"></i>
                 <input class="font-custom" placeholder="Weather" style="padding-left: 30px" type="text">
-                <button class="font-custom">Show</button>
+                <button class="font-custom show">Show</button>
             </div>
         </div>
     </form>
@@ -34,6 +28,7 @@
                 </h1>
                 <div class="font-custom" id='weatherInfo'></div>
             </div>
+            <div id="loading"></div>
         </section>
         <section id="historyBlock">
             <div class="block">

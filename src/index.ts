@@ -70,7 +70,8 @@ const render = (props: RenderData) => {
     return (loading.innerHTML = "Loading....");
   }
   if (props.error) {
-    return (loading.innerHTML = `<h1 style="color: red">${props.error.message}</h1>`);
+    console.log(props.error);
+    return (loading.innerHTML = "Error loading");
   }
   if (props.currentCity) {
     showWeather(props.currentCity);

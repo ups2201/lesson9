@@ -7,6 +7,7 @@ import * as actions from "./actions";
 import { addCityInStorage, getCityFromStorage } from "./localStorage";
 import "./styles.css";
 
+localStorage.setItem("cities", JSON.stringify([]));
 const loading = document.querySelector("#loading") as HTMLElement;
 document.addEventListener("DOMContentLoaded", showDefaultCityData);
 

@@ -20,7 +20,10 @@ function showDefaultCityData() {
   store.dispatch(actions.loading());
   showGeo()
     .then(async (data) => {
-      const weatherInfo = await getWeatherByCoords(data.latitude, data.longitude);
+      const weatherInfo = await getWeatherByCoords(
+        data.latitude,
+        data.longitude,
+      );
       store.dispatch(actions.success(weatherInfo));
     })
     .catch((error) => {

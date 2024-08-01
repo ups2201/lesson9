@@ -9,8 +9,7 @@ import {addCityInStorage, getCitiesFromStorage, getCityFromStorage, setCities} f
 import {error} from "./actions";
 import "./styles.css";
 
-const el = document.querySelector("#message") as HTMLElement;
-const main = document.querySelector("#message") as HTMLElement;
+const loading = document.querySelector("#loading") as HTMLElement;
 document.addEventListener("DOMContentLoaded", showDefaultCityData);
 
 
@@ -21,6 +20,7 @@ type RenderData = {
 };
 
 function showDefaultCityData() {
+    store.dispatch(actions.loading());
     showGeo()
         .then(async (data) => {
             let weatherInfo = await getWeatherByCoords(
@@ -35,6 +35,7 @@ function showDefaultCityData() {
 }
 
 async function show() {
+    store.dispatch(actions.loading());
     // чтобы не перезагружать страницу
     // ev.preventDefault();
     let inputCity = document.querySelector("input");
@@ -68,19 +69,20 @@ async function loadDataFromHistory() {
 
 const render = (props: RenderData) => {
     if (props.isLoading) {
-        return (el.innerHTML = "Loading....");
+        return (loading.innerHTML = "Loading....");
     }
     if (props.error) {
-        return (el.innerHTML = `<h1 style="color: red">${props.error.message}</h1>`);
+        return (loading.innerHTML = `<h1 style="color: red">${props.error.message}</h1>`);
     }
     if (props.currentCity) {
         console.log(props.currentCity)
         showWeather(props.currentCity);
         addCityInStorage(props.currentCity);
         showHistory();
+        loading.innerHTML = "";
         return;
     }
-    el.innerHTML = `<button>Load data</button>`;
+
     // el.querySelector("button")?.addEventListener("click", loadDataFromHistory);
     document.querySelector(".show")?.addEventListener("click", show);
 };

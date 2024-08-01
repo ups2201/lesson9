@@ -9,6 +9,15 @@
   grid-template-columns: 300px 300px 300px;
   column-gap: 10px;
   width: 900px;
+  position: relative;
+}
+
+#loading {
+  position: absolute;
+  font-size: 80px;
+  top: 150px;
+  left: 300px;
+  color: red;
 }
 
 .block {

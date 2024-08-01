@@ -1,8 +1,6 @@
 import { createStore, applyMiddleware } from "redux";
 import { apiReducer } from "./reducer";
 import { loggerMiddleware } from "./logger";
+import { thunk } from "redux-thunk";
 
-export const store =
-    typeof loggerMiddleware === "function"
-        ? createStore(apiReducer, applyMiddleware(loggerMiddleware))
-        : createStore(apiReducer);
+export const store = createStore(apiReducer, applyMiddleware(loggerMiddleware, thunk));

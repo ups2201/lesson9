@@ -10,7 +10,7 @@ export function showWeather(weatherDataJson) {
   weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${weatherDataJson.coord.lon},${weatherDataJson.coord.lat}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
 }
 
-export function viewHistory(loadDataFromHistory) {
+export function viewHistory(getCityWeatherFromHistory) {
   document.querySelectorAll(".cityHistory").forEach((e) => e.remove());
   let citiesPromise = getCitiesFromStorage().then((cities) => {
     const historyBlock = document.querySelector("#history");
@@ -20,7 +20,7 @@ export function viewHistory(loadDataFromHistory) {
       paragraph.classList.add("font-custom");
       paragraph.classList.add("cityHistory");
       paragraph.innerText = city.name;
-      paragraph.addEventListener("click", loadDataFromHistory);
+      paragraph.addEventListener("click", getCityWeatherFromHistory);
       historyBlock.append(paragraph);
     });
   });

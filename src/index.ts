@@ -50,7 +50,7 @@ function getCityWeatherFromApi(ev) {
     }
 }
 
-function getCityWeatherFromHistory(ev) {
+export function getCityWeatherFromHistory(ev) {
     return (dispatch: typeof store.dispatch, getState: typeof store.getState) => {
         dispatch(actions.loading());
         const cityName = ev.target.innerText;
@@ -74,7 +74,7 @@ const render = (props: RenderData) => {
     if (props.currentCity) {
         showWeather(props.currentCity);
         addCityInStorage(props.currentCity);
-        viewHistory(getCityWeatherFromHistory);
+        viewHistory();
         loading.innerHTML = "";
         return;
     }

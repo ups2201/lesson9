@@ -1,9 +1,9 @@
-import { createStore, applyMiddleware } from "redux";
+import { configureStore, applyMiddleware, Tuple } from "@reduxjs/toolkit";
 import { apiReducer } from "./reducer";
 import { loggerMiddleware } from "./logger";
 import { thunk } from "redux-thunk";
 
-export const store = createStore(
-  apiReducer,
-  applyMiddleware(loggerMiddleware, thunk),
-);
+export const store = configureStore({
+  reducer: apiReducer,
+  middleware: () => new Tuple(loggerMiddleware, thunk),
+});

@@ -2,13 +2,13 @@ import { Reducer } from "redux";
 
 export type State = {
     isLoading: boolean;
-    data: any | undefined;
+    currentCity: any | undefined;
     error: Error | undefined;
 };
 
 const initialState: State = {
     isLoading: false,
-    data: undefined,
+    currentCity: undefined,
     error: undefined,
 };
 
@@ -20,14 +20,14 @@ export const apiReducer: Reducer<State> = (state = initialState, action) => {
             return {
                 ...state,
                 isLoading: false,
-                data: action.payload,
+                currentCity: action.payload,
                 error: undefined,
             };
         case "ERROR":
             return {
                 ...state,
                 isLoading: false,
-                data: undefined,
+                currentCity: undefined,
                 error: action.error,
             };
         default:

@@ -4,7 +4,17 @@
  */
 export function addCityInStorage(weather) {
   //Получаем города из локального хранилища
-  let cities = JSON.parse(localStorage.getItem("cities"));
+  let cities;
+  if (localStorage.getItem("cities")) {
+    console.log("true");
+
+    cities = JSON.parse(localStorage.getItem("cities"));
+  } else {
+    console.log("false");
+    cities = [];
+  }
+  console.log("cities");
+  console.log(cities);
 
   //Если уже есть такой город, то удаляем его
   for (let i = 0; i < cities.length; i++) {
@@ -29,9 +39,10 @@ export async function getCitiesFromStorage() {
 }
 
 export async function getCityFromStorage(cityName) {
-  return JSON.parse(localStorage.getItem("cities")).find(
+  let result = JSON.parse(localStorage.getItem("cities")).find(
     (cityData) => cityData.name === cityName,
   );
+  return result;
 }
 
 export function setCities() {

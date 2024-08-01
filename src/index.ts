@@ -1,6 +1,6 @@
 import { State } from "./reducer";
 import { store } from "./store";
-import {showHistory, showWeather} from "./view.js";
+import {viewHistory, showWeather} from "./view.js";
 import {getWeatherByCityName, getWeatherByCoords} from "./apiWeather.js";
 import {showGeo} from "./apiGeo.js";
 import * as actions from "./actions";
@@ -32,15 +32,12 @@ function showDefaultCityData() {
         });
 }
 
-async function showCityFromApi(ev) {
+function getCityWeatherFromApi(ev) {
     store.dispatch(actions.loading());
     // чтобы не перезагружать страницу
     ev.preventDefault();
     let inputCity = document.querySelector("input");
-    let cityName;
-    if (cityName === undefined) {
-        cityName = inputCity.value;
-    }
+    let cityName = inputCity.value;
     inputCity.value = "";
 
     getWeatherByCityName(cityName)
@@ -52,7 +49,7 @@ async function showCityFromApi(ev) {
         });
 }
 
-async function loadDataFromHistory(ev) {
+async function getCityWeatherFromHistory(ev) {
     store.dispatch(actions.loading());
     const cityName = ev.target.innerText;
     getCityFromStorage(cityName)
@@ -74,11 +71,11 @@ const render = (props: RenderData) => {
     if (props.currentCity) {
         showWeather(props.currentCity);
         addCityInStorage(props.currentCity);
-        showHistory(loadDataFromHistory);
+        viewHistory(getCityWeatherFromHistory);
         loading.innerHTML = "";
         return;
     }
-    document.querySelector(".show")?.addEventListener("click", showCityFromApi);
+    document.querySelector(".show")?.addEventListener("click", getCityWeatherFromApi);
 };
 
 const selectData = (state: State): RenderData => ({

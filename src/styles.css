@@ -32,8 +32,8 @@
 
 #history {
   display: grid;
-  grid-template-rows: repeat(5, 1em);
-  row-gap: 10px;
+  grid-template-rows: repeat(10, 1em);
+  row-gap: 9px;
   height: 10em;
 }
 

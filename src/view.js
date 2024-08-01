@@ -10,7 +10,7 @@ export function showWeather(weatherDataJson) {
   weatherCityImage.innerHTML = `<img src="https://static-maps.yandex.ru/v1?ll=${weatherDataJson.coord.lon},${weatherDataJson.coord.lat}&lang=ru_RU&size=300,300&z=13&apikey=5caf3d9c-2a6c-4d7f-ac2c-3a3123241fe7">`;
 }
 
-export function showHistory(loadDataFromHistory) {
+export function viewHistory(loadDataFromHistory) {
   document.querySelectorAll(".cityHistory").forEach((e) => e.remove());
   let citiesPromise = getCitiesFromStorage().then((cities) => {
     const historyBlock = document.querySelector("#history");
